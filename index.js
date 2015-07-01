@@ -2,7 +2,6 @@
     'use strict';
 
     var _ = require('lodash');
-    var parseCss = require('parseCss');
     var path = require('path');
     var through = require('through2');
     var gulpOptions = {};

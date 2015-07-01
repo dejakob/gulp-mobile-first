@@ -12,7 +12,10 @@
     "url": "http://dejakob.com/"
   },
   "main": "./index.js",
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "^3.10.0",
+    "through2": "^2.0.0"
+  },
   "licenses": [
     {
       "type": "MIT"
