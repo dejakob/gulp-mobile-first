@@ -1,0 +1,21 @@
+{
+  "name": "gulp-mobile-first",
+  "description": "Gulp mobile first",
+  "version": "0.0.0",
+  "homepage": "http://github.com/dejakob/gulp-mobile-first",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dejakob/gulp-mobile-first.git"
+  },
+  "author": {
+    "name": "dejakob",
+    "url": "http://dejakob.com/"
+  },
+  "main": "./index.js",
+  "dependencies": {},
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ]
+}
