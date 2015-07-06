@@ -1,7 +1,7 @@
 {
   "name": "gulp-mobile-first",
   "description": "Gulp mobile first",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage": "http://github.com/dejakob/gulp-mobile-first",
   "repository": {
     "type": "git",
