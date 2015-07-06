@@ -5,6 +5,10 @@ This gulp plugin is created to autocompile media queries. Perfect for bigger mob
 
 ## How to use
 
+```
+var gulp_mobile = require('gulp_mobile');
+```
+
 ### Example folder structure of project
 - app
   - home
