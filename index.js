@@ -4,26 +4,32 @@
     var _ = require('lodash');
     var path = require('path');
     var through = require('through2');
+    var gutil = require('gulp-util');
+    var File = gutil.File;
     var gulpOptions = {};
+    var totalResult = '';
 
-    // TODO Look for multiple files
-    function transform(files, enc, cb) {
-        var totalResult = '';
+    function transform(file, enc, cb) {
+        if (file.isNull()) {
+            this.push(file);
+            return cb();
+        }
 
-        files.forEach(function (file) {
-            var filename = path.relative(file.cwd, file.path);
-            var source = file.contents.toString('utf8');
+        var filename = '' + file.path;
+        var source = file.contents.toString('utf8');
+        var mobileHeader = '@media screen and (max-width: ' + (gulpOptions.mobile - 1) + 'px) {';
+        var mobileFooter = '}';
 
-            var mobileHeader = '@media screen and (max-width: ' + gulpOptions.mobile - 1 + ') {';
-            var mobileFooter = '}';
+        var desktopHeader = '@media screen and (min-width: ' + gulpOptions.mobile + 'px) {';
+        var desktopFooter = '}';
 
-            var desktopHeader = '@media screen and (min-width: ' + gulpOptions.mobile + ') {';
-            var desktopFooter = '}';
-
+        if (source.trim().length) {
             if (_.endsWith(filename, '.mobile.less')
                 || _.endsWith(filename, '.mobile.sass')
                 || _.endsWith(filename, '.mobile.css')
             ) {
+                source = source.replace(/\@width/gi, (gulpOptions.mobile - 1) + 'px');
+
                 totalResult += "\n\n";
                 totalResult += mobileHeader + "\n";
                 totalResult += source + "\n";
@@ -31,6 +37,8 @@
             } else if (_.endsWith(filename, '.desktop.less')
                 || _.endsWith(filename, '.desktop.sass')
                 || _.endsWith(filename, '.desktop.css')) {
+                source = source.replace(/\@width/gi, gulpOptions.mobile + 'px');
+
                 totalResult += "\n\n";
                 totalResult += desktopHeader + "\n";
                 totalResult += source + "\n";
@@ -41,19 +49,28 @@
                 totalResult += "\n\n";
                 totalResult += source + "\n";
             }
-        });
+        }
 
-        // TODO change
-        cb(totalResult);
+        cb();
+    }
+
+    function end(cb) {
+        var tempFile = new File();
+        tempFile.path = '.';
+        tempFile.contents = new Buffer(totalResult);
+
+        this.push(tempFile);
+        cb(null, tempFile);
     }
 
     function gulpMobileFirst(options) {
+        totalResult = '';
         gulpOptions = options || {};
         gulpOptions.mobile = gulpOptions.mobile || 800;
 
         // TODO tablet
 
-        through.obj(transform);
+        return through.obj(transform, end);
     }
 
     module.exports = gulpMobileFirst;
